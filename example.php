@@ -36,6 +36,23 @@ $data->setOutputEncoding('CP1251');
 *
 **/
 
+$file = 'Book1.zip';
+$path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+$zip = new ZipArchive;
+
+$res = $zip->open($file);
+if ($res === TRUE) {
+  // extract it to the path we determined above
+  $zip->extractTo($path);
+  $zip->close();
+  echo "WOOT! $file extracted to $path";
+} else {
+  echo "Doh! I couldn't open $file";
+}
+
+
+
+
 $data->read('Book1.xls');
 
 $servername = "localhost";
@@ -95,6 +112,9 @@ for ($i = 2; $i <= $data->sheets[0]['numRows']; $i++) {
 
 }
 $conn->close();
+
+rename("Book1.xls", "backup/Book1.xls");
+rename("Book1.zip", "backup/Book1.zip");
 
 //print_r($data);
 //print_r($data->formatRecords);
